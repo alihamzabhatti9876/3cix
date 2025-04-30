@@ -7,3 +7,4 @@ export const login = (data: { email: string; password: string }) => {
 export const getProfile = () => {
   return apiService.get('/user/profile');
 };
+console.log("sdfj")
