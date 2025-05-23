@@ -1,8 +1,12 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
+@custom-variant dark (&:is(.dark *));
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-oxygen: 'Oxygen', sans-serif;
+}
+html {
+  font-family: var(--font-oxygen);
 }
 
 @theme inline {
@@ -10,17 +14,127 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-active-foreground: var(--active-foreground);
+  --color-active: var(--active);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.625rem;
+  --background: #ffffff;
+  --foreground: #262626;
+  --card: #ffffff;
+  --card-foreground: #262626;
+  --popover: #ffffff;
+  --popover-foreground: #262626;
+  --primary: #2c2c2c;
+  --primary-foreground: #fcfcfc;
+  --secondary: #f7f7f7;
+  --secondary-foreground: #2c2c2c;
+  --muted: #f7f7f7;
+  --muted-foreground: #8e8e8e;
+  --active:  #1348FC;
+  --active-foreground: #1348FC;
+  --accent: #f7f7f7;
+  --accent-foreground: #2c2c2c;
+  --destructive: #ce4d36;
+  --border: #ebebeb;
+  --input: #ebebeb;
+  --ring: #b4b4b4;
+  --chart-1: #f2994a;
+  --chart-2: #6c9ef8;
+  --chart-3: #5c6bc0;
+  --chart-4: #f4d35e;
+  --chart-5: #e09f3e;
+  --sidebar: #1F263E;
+  --sidebar-foreground: #fcfcfc;
+  --sidebar-primary: #2c2c2c;
+  --sidebar-border: #70BCFD;
+  --sidebar-primary-foreground: #fcfcfc;
+  --sidebar-accent: #303750;
+  --sidebar-accent-foreground: #fcfcfc;
+  --sidebar-border: #ebebeb;
+  --sidebar-ring: #b4b4b4;
+}
+
+.dark {
+  --background: #262626;
+  --foreground: #fcfcfc;
+  --card: #2c2c2c;
+  --card-foreground: #fcfcfc;
+  --popover: #2c2c2c;
+  --popover-foreground: #fcfcfc;
+  --primary: #ebebeb;
+  --primary-foreground: #2c2c2c;
+  --secondary: #444444;
+  --secondary-foreground: #fcfcfc;
+  --muted: #444444;
+  --muted-foreground: #b4b4b4;
+  --accent: #444444;
+  --accent-foreground: #fcfcfc;
+  --destructive: #f35b4f;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.15);
+  --active:  #1348FC;
+  --active-foreground: #1348FC;
+  --ring: #8e8e8e;
+  --chart-1: #7c6ee0;
+  --chart-2: #60a5fa;
+  --chart-3: #e09f3e;
+  --chart-4: #a779e9;
+  --chart-5: #e27d60;
+  --sidebar: #1F263E;
+  --sidebar-foreground: #fcfcfc;
+  --sidebar-primary: #7c6ee0;
+  --sidebar-primary-foreground: #fcfcfc;
+  --sidebar-accent: #303750;
+  --sidebar-accent-foreground: #fcfcfc;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: #8e8e8e;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .bg-custom-gradient {
+    background: linear-gradient(75.37deg, #0043FF 25.69%, #A370F1 105.3%);
+  }
 }

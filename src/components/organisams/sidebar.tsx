@@ -1,32 +1,136 @@
 'use client';
 
-import React from 'react';
-import { HomeOutlined, SettingOutlined } from '@ant-design/icons';
-import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import {
+  BarChart2,
+  Bell,
+  Gift,
+  HelpCircle,
+  Landmark,
+  LayoutDashboard,
+  RefreshCw,
+  Settings,
+  Wallet,
+  Zap
+} from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+import SideBarFooter from '../molecules/SideBarFooter';
+import SideBarHeader from '../molecules/SideBarHeader';
+import SidebarItem from '../molecules/SideBarItem';
+import SidebarSection from '../molecules/SideBarSection';
 
-const menuItems = [
-  { label: 'Home', href: '/', icon: <HomeOutlined /> },
-  { label: 'Settings', href: '/settings', icon: <SettingOutlined /> },
-];
+interface SidebarProps {
+  collapsed: boolean;
+  setCollapsed: (val: boolean) => void;
+  isMobile: boolean;
+  drawerOpen: boolean;
+  setDrawerOpen: (val: boolean) => void;
+}
 
-const Sidebar = () => {
-  return (
-    <aside className="w-64 h-screen bg-white dark:bg-gray-900 border-r dark:border-gray-800 p-4 space-y-4 fixed top-0 left-0">
-      <div className="text-xl font-bold text-gray-800 dark:text-white">🚀 MyApp</div>
-      <nav className="space-y-2">
-        {menuItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-primary transition px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            {item.icon}
-            <span>{item.label}</span>
-          </Link>
-        ))}
-      </nav>
+export function Sidebar({
+  collapsed,
+  setCollapsed,
+  isMobile,
+  drawerOpen,
+  setDrawerOpen
+}: SidebarProps) {
+
+  const pathname = usePathname();
+  const drawerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (
+        isMobile &&
+        drawerOpen &&
+        drawerRef.current &&
+        !drawerRef.current.contains(e.target as Node)
+      ) {
+        setDrawerOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, [drawerOpen, isMobile]);
+
+  useEffect(() => {
+    if (isMobile && drawerOpen) {
+      setDrawerOpen(false);
+    }
+  }, [pathname]);
+
+  const SidebarContent = (
+    <aside
+      ref={drawerRef}
+      className={cn(
+        "flex flex-col h-screen overflow-y-auto bg-sidebar border-r border-border transition-all duration-300 z-50",
+        isMobile ? "fixed top-0 left-0 w-[256px]" : collapsed ? "w-20" : "w-64"
+      )}
+    >
+    <SideBarHeader collapsed={collapsed} />
+
+    
+      <div className="flex-1 overflow-y-auto">
+        <SidebarSection title={!collapsed ? 'Quick Access' : ''}>
+          <SidebarItem icon={LayoutDashboard} label="Dashboard" href="/dashboard" isActive collapsed={collapsed} />
+          <SidebarItem icon={RefreshCw} label="Exchange" href="/dashboard" collapsed={collapsed} />
+          <SidebarItem icon={Wallet} label="My Wallet" href="/dashboard" hasSubmenu collapsed={collapsed} />
+          <SidebarItem icon={BarChart2} label="Tradeview" href="/dashboard" collapsed={collapsed} />
+        </SidebarSection>
+
+        <SidebarSection title={!collapsed ? 'Service' : ''}>
+          <SidebarItem icon={Landmark} label="Transactions" hasSubmenu collapsed={collapsed}>
+            <SidebarItem label="Buy & Sell Coin" href="/dashboard" collapsed={collapsed} />
+            <SidebarItem label="Deposit Yen" href="/dashboard" collapsed={collapsed} />
+            <SidebarItem label="Withdraw Yen" href="/dashboard" collapsed={collapsed} />
+            <SidebarItem label="Send Coin" href="/dashboard" collapsed={collapsed} />
+            <SidebarItem label="Receive Coin" href="/dashboard" collapsed={collapsed} />
+            <SidebarItem label="Deposit Coin" href="/dashboard" collapsed={collapsed} />
+          </SidebarItem>
+          <SidebarItem icon={Gift} label="Rewards" href="/dashboard" hasSubmenu collapsed={collapsed} />
+          <SidebarItem icon={Zap} label="Utility Plan" href="/dashboard" hasSubmenu collapsed={collapsed} />
+        </SidebarSection>
+
+        <SidebarSection title={!collapsed ? 'Account' : ''}>
+          <SidebarItem icon={Bell} label="Notifications" href="/dashboard" collapsed={collapsed} />
+          <SidebarItem icon={Settings} label="Settings" href="/dashboard" collapsed={collapsed} />
+          <SidebarItem icon={HelpCircle} label="FAQ" href="/dashboard" collapsed={collapsed} />
+        </SidebarSection>
+      </div>
+
+      <SideBarFooter collapsed={collapsed} />
     </aside>
   );
-};
 
-export default Sidebar;
+  return (
+    <>
+      {isMobile && !drawerOpen && (
+        <button
+          onClick={() => setDrawerOpen(true)}
+          className="fixed top-4 left-4 z-[60]  p-2 rounded shadow-md"
+        >
+          <img
+            src="/burger.svg"
+            alt="Burger"
+            width={20}
+            height={20}
+            className="cursor-pointer"
+            onClick={() => setDrawerOpen(true)}
+
+          />
+        </button>
+      )}
+
+      {(!isMobile || drawerOpen) && SidebarContent}
+
+      {isMobile && drawerOpen && (
+        <div
+          className="fixed inset-0 z-[40] bg-black/30 backdrop-blur-sm"
+          onClick={() => setDrawerOpen(false)}
+        />
+      )}
+    </>
+  );
+}

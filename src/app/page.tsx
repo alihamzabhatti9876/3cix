@@ -1,9 +1,6 @@
-import AuthLayout from "@/components/templates/authLayout";
+'use client';
 
-export default function Home({ children }: { children: React.ReactNode }) {
-  return (
-    <AuthLayout>
-      {children}
-    </AuthLayout>
-  );
+
+export default function Home() {
+  return null;
 }
